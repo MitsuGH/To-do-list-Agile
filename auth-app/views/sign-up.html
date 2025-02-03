@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="css/sign-up.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="image">
+      <img src="image/logo-img.jpg" alt="image">
+    </div>
+
+    <div class="form">
+      <div class="form-input">
+        <div class="form-header">
+          <h1>New here?</h1>
+          <p>Create your account to stay organized and productive.</p>
+        </div>
+        <form action="/sign-up" method="POST">
+          <h2>Sign Up</h2>
+          <div class="username-input">
+            <p>Username</p>
+            <input type="text" name="username" placeholder="" required>
+          </div>
+          <div class="email-input">
+            <p>Email</p>
+            <input type="email" name="email" placeholder="" required>
+          </div>
+          <div class="pass-input">
+            <P>Password</P>
+            <input type="password" name="password" placeholder="" required>
+          </div>
+          <div class="form-message">
+            <p>You are agreeing to the <span class="form-message-style">Terms of Services</span> and 
+              <span class="form-message-style">Privacy Policies.</span>
+            </p>
+          </div>
+          <div class="form-button">
+            <button type="submit">Get Started</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="form-footer">
+        <p>
+          Already a member? <a href="/sign-in"><span class="form-message-style"><strong>Sign In</strong></span></a>
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
