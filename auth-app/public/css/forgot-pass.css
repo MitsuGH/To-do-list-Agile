@@ -47,7 +47,7 @@ html{
 
 .form-header p{
   font-weight: 700;
-  color: rgb(211, 211, 211);
+  color: rgba(0, 0, 0, 0.3);
 
 }
 .form-input{

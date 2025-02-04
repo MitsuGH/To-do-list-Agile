@@ -46,9 +46,13 @@ html{
 
 .form-header p{
   font-weight: 700;
-  color: rgb(211, 211, 211);
-
+  color: rgba(0, 0, 0, 0.3);
 }
+
+.form h2{
+  margin-bottom: 10px
+}
+
 .form-input{
   margin-bottom: 20px;
 }
@@ -68,6 +72,28 @@ html{
   margin-bottom: 8px;
 }
 
+.pass-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pass-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* Space for the eye icon */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #666;
+  font-size: 18px;
+}
+
+.toggle-password:hover {
+  color: #000;
+}
 
 .form-message{
   margin-bottom: 22px;
