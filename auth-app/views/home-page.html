@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+  <link rel="stylesheet" href="/auth-app/public/css/home-page.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <div id="wrapper">
+
+    <!-- Nav bar profile img, Name, Email -->
+    <div id="side-nav">
+      <div class="nav-header">
+        <div class="nav-image">
+          <img src="/auth-app/public/image/web-app.png" alt="profile picture">
+        </div>
+        <div class="nav-profile">
+          <div class="nav-profile-name">
+            <p>Steve Job</p>
+          </div>
+          <div class="nav-profile-email">
+            <p>steve@gmail.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <!-- Nav bar sections -->
+      <div id="nav-section">
+        <div class="nav-section-item">
+          <i class="fa-solid fa-house"></i>
+          <a href="">Dashboard</a>
+        </div>
+        <div class="nav-section-item">
+          <i class="fa-solid fa-star"></i>
+          <a href="">Favorites</a>
+        </div>
+        <div class="nav-section-item">
+          <i class="fa-solid fa-circle-check"></i>
+          <a href="">Completed</a>
+        </div>
+        <div class="nav-section-item">
+          <i class="fa-solid fa-bars"></i>
+          <a href="">Categories</a>
+        </div>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <!-- Nav bar dropdown -->
+      <div class="nav-dropdown">
+        <button class="nav-dropbtn" onclick="toggleDropdown()">
+        Upcomings 
+        <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="nav-dropdown-section">
+          <a href="#">#homework</a>
+          <a href="#">#assignment</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main content -->
+    <div id="main-content">
+      <div id="content-header">
+        <div class="content-header-title">
+          <h1>Today</h1>
+          <p>Wednesday 12, January </p>
+        </div>
+        <div class="content-header-button">
+          <div class="header-button-add">
+            <button class="add-taskBtn" onclick="openModal()"><i class="fa-solid fa-plus"></i>Add Task</button>
+          </div>
+          <div class="header-button-search">
+            <input type="text" class="search" placeholder="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <div class="header-button-sort">
+            <button class="sortBtn">
+              <i class="fa-solid fa-sort"></i>
+              Sort
+            </button>
+          </div>
+          <div class="header-button-more">
+            <button class="add-taskBtn"><i class="fa-solid fa-ellipsis"></i></button>
+          </div>  
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="/auth-app/public/js/toggle-dropdown.js"></script>
+</body>
+</html>

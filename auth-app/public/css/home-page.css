@@ -1,0 +1,174 @@
+* {
+  font-family: "Poppins", serif;
+  padding: 0;
+  margin: 0;
+}
+
+#wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+#side-nav {
+  width: 30vh;
+  background-color: #333;
+  padding: 20px;
+  color: white;
+}
+
+#main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f4f4f4;
+  overflow-y: auto;
+}
+
+.nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-image img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.nav-profile {
+  margin-left: 10px;
+}
+
+.nav-profile-name {
+  font-weight: bold;
+}
+
+.nav-profile-email {
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.nav-divider {
+  border-bottom: 1px solid #ccc;
+  margin: 8px 0;
+}
+
+#nav-section .nav-section-item{
+  padding: 0px 20px 0px 20px;
+  margin-bottom: 12px;
+}
+
+#nav-section a{
+  color: white;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropbtn {
+  background-color: #333;
+  color: white;
+  padding: 0px 0px 18px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-dropbtn i{
+  margin-left: 5rem;
+}
+
+.nav-dropdown-section {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  
+
+}
+
+.nav-dropdown-section a {
+  display: block;
+  color: white;
+  padding: 0px 20px 0px 28px;
+  margin-bottom: 12px;
+  text-decoration: none;
+  
+}
+
+.show {
+  display: block;
+}
+
+#main-content #content-header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.content-header-button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.content-header-button .header-button-add,
+.content-header-button .header-button-search,
+.content-header-button .header-button-sort,
+.content-header-button .header-button-more{
+  margin-left: 20px;
+}
+
+.content-header-button .header-button-add button,
+.content-header-button .header-button-search input{
+  padding: 10px 20px;
+  
+}
+
+.content-header-button .header-button-sort button,
+.content-header-button .header-button-more button{
+  padding: 10px 0px;
+}
+
+.content-header-button .header-button-add button{
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.content-header-button .header-button-add button i{
+  margin-right: 6px;
+}
+
+.content-header-button .header-button-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.content-header-button .header-button-search input{
+  border: none;
+  background-color: #e3e3e3;
+  padding: 10px 10px 10px 30px;
+  border-radius: 5px;
+}
+
+.content-header-button .header-button-search i {
+  position: absolute;
+  left: 10px;
+  color: #333;
+}
+
+.content-header-button .header-button-sort button,
+.content-header-button .header-button-more button{
+  border: none;
+  background-color: transparent;
+}
+
+.content-header-button .header-button-sort button i{
+  margin-right: 6px;
+}

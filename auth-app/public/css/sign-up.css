@@ -100,7 +100,7 @@ html{
 }
 
 .form-message-style{
-  color: #0094C6;
+  color: #212121;
   text-decoration: none;
   cursor: pointer;
 }
@@ -110,7 +110,7 @@ html{
   height: 45px;
   font-size: 16px;
   text-align: center;
-  background-color: #0094C6;
+  background-color: #212121;
   color: white;
   border: none;
   border-radius: 6px;
