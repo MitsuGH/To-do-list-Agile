@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 
 <body>
@@ -77,7 +78,7 @@
         </div>
         <div class="content-header-button">
           <div class="header-button-add">
-            <button class="add-taskBtn" onclick="openModal()"><i class="fa-solid fa-plus"></i>Add Task</button>
+            <button class="add-taskBtn" onclick="openTaskPanel()"><i class="fa-solid fa-plus"></i>Add Task</button>
           </div>
           <div class="header-button-search">
             <input type="text" class="search" placeholder="Search">
@@ -96,7 +97,73 @@
       </div>
     </div>
 
+    <!-- Task Input Panel -->
+    <div id="taskPanel" class="task-panel">
+      <div class="task-panel-content">
+        <span class="close" onclick="closeTaskPanel()">&times;</span>
+        
+        <!-- Task Title and Favorite -->
+        <div class="task-title">
+          <div class="task-name">
+            <input type="text" placeholder="Title" id="taskTitle">
+            <button class="add-step"><i class="fa-solid fa-plus"></i> Add Step</button>
+          </div>
+          <div class="task-favorite">
+            <i class="fa-regular fa-star"></i>
+          </div>         
+        </div>
+          
+        <!-- Date Selection -->
+        <div class="task-option">
+          <i class="fa-solid fa-calendar"></i> Date
+        </div>
+        
+        <!-- Priority Selection -->
+        <div class="task-priority">
+          <div class="task-priority-title">
+            <p>Priority</p>
+          </div>
+          <div class="task-priority-label">
+            <div><label><input type="radio" name="priority" value="high"> High</label></div>
+            <div><label><input type="radio" name="priority" value="medium"> Medium</label></div>
+            <div><label><input type="radio" name="priority" value="low"> Low</label></div>
+          </div>
+        </div>
+        
+        <!-- Reminder Selection -->
+        <div class="task-option">
+          <i class="fa-solid fa-clock"></i> Remind me
+        </div>
+        
+        <!-- Due Date Selection -->
+        <div class="task-option">
+          <form>
+            <i class="fa-solid fa-calendar"></i>
+            <input type="datetime-local" placeholder="Add Due Date">
+          </form>
+        </div>
+        
+        <!-- File Attachment -->
+        <div class="task-option">
+          <i class="fa-solid fa-paperclip"></i> Add file
+        </div>
+        
+        <!-- Notes Input -->
+        <div class="task-note">
+          <textarea placeholder="Add Note" id="taskNote"></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+         <div class="task-button">
+          <button class="add-task">Add</button>
+          <button class="cancel-task" onclick="closeTaskPanel()">Cancel</button>
+         </div>
+      </div>
+    </div>
+
   </div>
   <script src="/auth-app/public/js/toggle-dropdown.js"></script>
+  <script src="/auth-app/public/js/task-panel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>
