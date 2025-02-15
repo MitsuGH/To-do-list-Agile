@@ -40,11 +40,27 @@ function addTask() {
   closeTaskPanel();
 }
 
-config = {
-  altInput: true,
-  altFormat: "F j, Y",
-  dateFormat: "Y-m-d",
+function handleFileSelect(event) {
+  const files = event.target.files;
+  const fileList = document.getElementById('fileList');
+  fileList.innerHTML = '';
+
+  for (let i = 0; i < files.length; i++) {
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+    fileItem.innerHTML = `<i class="fa-solid fa-file"></i> ${files[i].name}`;
+    fileList.appendChild(fileItem);
+  }
 }
 
-flatpickr("input[type=datetime-local]", config);
+function showDatePicker() {
+  const datePicker = document.getElementById("hidden-date-picker");
+  datePicker.showPicker(); // Opens the date picker
+}
 
+function setDate(input) {
+  const textInput = document.getElementById("due-date");
+  if (input.value) {
+      textInput.value = new Date(input.value).toLocaleString(); // Formats selected date
+  }
+}

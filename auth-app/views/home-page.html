@@ -138,14 +138,18 @@
         <!-- Due Date Selection -->
         <div class="task-option">
           <form>
-            <i class="fa-solid fa-calendar"></i>
-            <input type="datetime-local" placeholder="Add Due Date">
+              <i class="fa-solid fa-calendar"></i>
+              <input type="text" id="due-date" placeholder="Add Due Date" readonly onclick="showDatePicker()">
+              <input type="datetime-local" id="hidden-date-picker" style="display: none;" onchange="setDate(this)">
           </form>
-        </div>
+      </div>
         
         <!-- File Attachment -->
         <div class="task-option">
-          <i class="fa-solid fa-paperclip"></i> Add file
+          <i class="fa-solid fa-paperclip"></i>
+          <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFileSelect(event)">
+          <button class="addfile-btn "onclick="document.getElementById('fileInput').click()">Add File</button>
+          <div id="fileList"></div>
         </div>
         
         <!-- Notes Input -->
@@ -164,6 +168,5 @@
   </div>
   <script src="/auth-app/public/js/toggle-dropdown.js"></script>
   <script src="/auth-app/public/js/task-panel.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>

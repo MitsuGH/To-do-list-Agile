@@ -301,11 +301,48 @@
   cursor: pointer;
   margin-right: 10px; 
 }
-
 .task-option form input{
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.task-option form input::placeholder {
+  color: white;
+}
+
+#hidden-date-picker::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+#due-date:focus {
+  outline: none;
+  border: none;
+}
+
+.task-option .addfile-btn{
+  font-size: 16px;
   color: white;
   background-color: transparent;
   border: none;
+}
+#fileList {
+  margin-top: 10px;
+}
+
+.file-item {
+  background-color: #f4f4f4;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.file-item i {
+  margin-right: 10px;
 }
 
 .task-note{
