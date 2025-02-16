@@ -251,8 +251,28 @@
   cursor: pointer;
 }
 
-.task-favorite i .active {
-  color: gold;
+.steps-list {
+  margin-top: 10px;
+}
+
+.step-item {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.step-item input {
+  flex: 1;
+  font-size: 14px;
+}
+
+.step-item button {
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
 .task-option i{
@@ -267,6 +287,52 @@
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.task-option form input{
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.task-option form input::placeholder {
+  color: white;
+}
+
+.date-picker {
+  color: white;
+  background-color: #333;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+#hidden-date-picker-date,
+#hidden-date-picker-reminder,
+#hidden-date-picker-due-date{
+  display: none;
+  color: white;
+}
+
+#hidden-date-picker::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+#date:focus {
+  outline: none;
+  border: none;
+}
+
+#reminder:focus {
+  outline: none;
+  border: none;
+}
+
+#due-date:focus {
+  outline: none;
+  border: none;
 }
 
 .task-priority{
@@ -300,26 +366,6 @@
   accent-color: White; 
   cursor: pointer;
   margin-right: 10px; 
-}
-.task-option form input{
-  font-size: 16px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.task-option form input::placeholder {
-  color: white;
-}
-
-#hidden-date-picker::-webkit-calendar-picker-indicator {
-  display: none;
-  -webkit-appearance: none;
-}
-
-#due-date:focus {
-  outline: none;
-  border: none;
 }
 
 .task-option .addfile-btn{

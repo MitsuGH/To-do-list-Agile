@@ -13,8 +13,8 @@ document.querySelector('.favorite-icon').addEventListener('click', function () {
 });
 
 function addTask() {
-  const taskTitle = document.getElementById('taskInput').value.trim();
-  const taskNotes = document.getElementById('taskNotes').value.trim();
+  const taskTitle = document.getElementById('taskTitle').value.trim();
+  const taskNotes = document.getElementById('taskNote').value.trim();
   const selectedPriority = document.querySelector('input[name="priority"]:checked');
   
   if (taskTitle === '') {
@@ -35,9 +35,25 @@ function addTask() {
 
   taskList.appendChild(taskItem);
 
-  document.getElementById('taskInput').value = '';
-  document.getElementById('taskNotes').value = '';
+  document.getElementById('taskTitle').value = '';
+  document.getElementById('taskNote').value = '';
   closeTaskPanel();
+}
+
+function addStep() {
+  const stepsList = document.getElementById('steps-list');
+  const stepItem = document.createElement('div');
+  stepItem.className = 'step-item';
+  stepItem.innerHTML = `
+    <input type="text" placeholder="Step">
+    <button onclick="removeStep(this)">Remove</button>
+  `;
+  stepsList.appendChild(stepItem);
+}
+
+function removeStep(button) {
+  const stepItem = button.parentElement;
+  stepItem.remove();
 }
 
 function handleFileSelect(event) {
@@ -53,14 +69,13 @@ function handleFileSelect(event) {
   }
 }
 
-function showDatePicker() {
-  const datePicker = document.getElementById("hidden-date-picker");
-  datePicker.showPicker(); // Opens the date picker
+function showDatePicker(id) {
+  document.getElementById(`hidden-date-picker-${id}`).click();
 }
 
-function setDate(input) {
-  const textInput = document.getElementById("due-date");
+function setDate(input, id) {
+  const textInput = document.getElementById(id);
   if (input.value) {
-      textInput.value = new Date(input.value).toLocaleString(); // Formats selected date
+    textInput.value = new Date(input.value).toLocaleString(); // Formats selected date
   }
 }

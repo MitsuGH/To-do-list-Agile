@@ -106,16 +106,22 @@
         <div class="task-title">
           <div class="task-name">
             <input type="text" placeholder="Title" id="taskTitle">
-            <button class="add-step"><i class="fa-solid fa-plus"></i> Add Step</button>
+            <button class="add-step" onclick="addStep()"><i class="fa-solid fa-plus"></i> Add Step</button>
+            <div id="steps-list" class="steps-list"></div> 
           </div>
           <div class="task-favorite">
             <i class="fa-regular fa-star"></i>
-          </div>         
+          </div>      
+          <!-- Steps List -->  
         </div>
           
         <!-- Date Selection -->
         <div class="task-option">
-          <i class="fa-solid fa-calendar"></i> Date
+          <form>
+            <i class="fa-solid fa-calendar"></i> 
+            <input type="text" id="date" placeholder="Add Date" readonly onclick="showDatePicker('date')">
+            <input type="datetime-local" id="hidden-date-picker-date" onchange="setDate(this, 'date')">
+          </form>
         </div>
         
         <!-- Priority Selection -->
@@ -132,15 +138,19 @@
         
         <!-- Reminder Selection -->
         <div class="task-option">
-          <i class="fa-solid fa-clock"></i> Remind me
+          <form>
+            <i class="fa-solid fa-clock"></i> 
+            <input type="text" id="reminder" placeholder="Add Reminder" readonly onclick="showDatePicker('reminder')">
+            <input type="datetime-local" id="hidden-date-picker-reminder" onchange="setDate(this, 'reminder')">
+          </form>
         </div>
         
         <!-- Due Date Selection -->
         <div class="task-option">
           <form>
               <i class="fa-solid fa-calendar"></i>
-              <input type="text" id="due-date" placeholder="Add Due Date" readonly onclick="showDatePicker()">
-              <input type="datetime-local" id="hidden-date-picker" style="display: none;" onchange="setDate(this)">
+              <input type="text" id="due-date" placeholder="Add Due Date" readonly onclick="showDatePicker('due-date')">
+              <input type="datetime-local" id="hidden-date-picker-due-date" onchange="setDate(this, 'due-date')">
           </form>
       </div>
         
