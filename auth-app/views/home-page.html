@@ -13,175 +13,174 @@
 </head>
 
 <body>
-  <div id="wrapper">
-
-    <!-- Nav bar profile img, Name, Email -->
-    <div id="side-nav">
-      <div class="nav-header">
-        <div class="nav-image">
-          <img src="/auth-app/public/image/web-app.png" alt="profile picture">
-        </div>
-        <div class="nav-profile">
-          <div class="nav-profile-name">
-            <p>Steve Job</p>
-          </div>
-          <div class="nav-profile-email">
-            <p>steve@gmail.com</p>
-          </div>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="user-profile">
+        <img src="https://picsum.photos/50" alt="User Profile" class="profile-img">
+        <div class="user-info">
+          <h3>ledhaaaa</h3>
+          <p>example@gmail.com</p>
         </div>
       </div>
 
-      <div class="nav-divider"></div>
-
-      <!-- Nav bar sections -->
-      <div id="nav-section">
-        <div class="nav-section-item">
-          <i class="fa-solid fa-house"></i>
-          <a href="">Dashboard</a>
+      <div class="sidebar-menu">
+        <div class="menu-item active">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
         </div>
-        <div class="nav-section-item">
-          <i class="fa-solid fa-star"></i>
-          <a href="">Favorites</a>
+        <div class="menu-item">
+          <i class="fas fa-star"></i>
+          <span>Favorites</span>
         </div>
-        <div class="nav-section-item">
-          <i class="fa-solid fa-circle-check"></i>
-          <a href="">Completed</a>
+        <div class="menu-item">
+          <i class="fas fa-check-circle"></i>
+          <span>Completed</span>
         </div>
-        <div class="nav-section-item">
-          <i class="fa-solid fa-bars"></i>
-          <a href="">Categories</a>
+        <div class="menu-item">
+          <i class="fas fa-list"></i>
+          <span>Categories</span>
         </div>
       </div>
 
-      <div class="nav-divider"></div>
-
-      <!-- Nav bar dropdown -->
-      <div class="nav-dropdown">
-        <button class="nav-dropbtn" onclick="toggleDropdown()">
-        Upcomings 
-        <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="nav-dropdown-section">
-          <a href="#">#homework</a>
-          <a href="#">#assignment</a>
+      <div class="categories-section">
+        <div class="category-header">
+          <span>Upcomings</span>
+          <i class="fas fa-chevron-down"></i>
         </div>
-      </div>
-
-    </div>
-
-    <!-- Main content -->
-    <div id="main-content">
-      <div id="content-header">
-        <div class="content-header-title">
-          <h1>Today</h1>
-          <p>Wednesday 12, January </p>
-        </div>
-        <div class="content-header-button">
-          <div class="header-button-add">
-            <button class="add-taskBtn" onclick="openTaskPanel()"><i class="fa-solid fa-plus"></i>Add Task</button>
-          </div>
-          <div class="header-button-search">
-            <input type="text" class="search" placeholder="Search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-          <div class="header-button-sort">
-            <button class="sortBtn">
-              <i class="fa-solid fa-sort"></i>
-              Sort
-            </button>
-          </div>
-          <div class="header-button-more">
-            <button class="add-taskBtn"><i class="fa-solid fa-ellipsis"></i></button>
-          </div>  
-        </div>
+        <div class="category-item"></div>
+        <div class="category-item"></div>
       </div>
     </div>
 
-    <!-- Task Input Panel -->
-    <div id="taskPanel" class="task-panel">
-      <div class="task-panel-content">
-        <span class="close" onclick="closeTaskPanel()">&times;</span>
-        
-        <!-- Task Title and Favorite -->
-        <div class="task-title">
-          <div class="task-name">
-            <div class="task-name-starIcon">
-              <input type="text" placeholder="Title" id="taskTitle">
-              <i class="fa-regular fa-star"></i>
-            </div>
-            <button class="add-step" onclick="addStep()"><i class="fa-solid fa-plus"></i> Add Step</button>
-            <div id="steps-list" class="steps-list"></div> 
-          </div>     
-        </div>
-          
-        <!-- Date Selection -->
-        <div class="task-option">
-          <form>
-            <i class="fa-solid fa-calendar"></i> 
-            <input type="text" id="date" placeholder="Add Date" readonly onclick="showDatePicker('date')">
-            <input type="datetime-local" id="hidden-date-picker-date" onchange="setDate(this, 'date')">
-          </form>
-        </div>
-        
-        <!-- Priority Selection -->
-        <div class="task-priority">
-          <div class="task-priority-title">
-            <p>Priority</p>
-          </div>
-          <div class="task-priority-label">
-            <div><label><input type="radio" name="priority" value="high"> High</label></div>
-            <div><label><input type="radio" name="priority" value="medium"> Medium</label></div>
-            <div><label><input type="radio" name="priority" value="low"> Low</label></div>
-          </div>
-        </div>
-        
-        <!-- Category Selection -->
-        <div class="task-option">
-          <form>
-            <i class="fa-solid fa-bars"></i>
-            <select id="category" onchange="updateCategory(this)">
-              <option value="" disabled selected>Choose Category</option>
-              <option value="Work">Work</option>
-              <option value="Personal">Personal</option>
-              <option value="Exercise & Health">Exercise & Health</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Finance">Finance</option>
-            </select>
-          </form>
-        </div>
-        
-        <!-- Due Date Selection -->
-        <div class="task-option">
-          <form>
-            <i class="fa-solid fa-calendar"></i> 
-            <input type="text" id="due-date" placeholder="Add Due Date" readonly onclick="showDatePicker('due-date')">
-            <input type="datetime-local" id="hidden-date-picker-due-date" onchange="setDate(this, 'due-date')">
-          </form>
-        </div>
-        
-        <!-- File Attachment -->
-        <div class="task-option">
-          <i class="fa-solid fa-paperclip"></i>
-          <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFileSelect(event)">
-          <button class="addfile-btn "onclick="document.getElementById('fileInput').click()">Add File</button>
-          <div id="fileList"></div>
-        </div>
-        
-        <!-- Notes Input -->
-        <div class="task-note">
-          <textarea placeholder="Add Note" id="taskNote"></textarea>
-        </div>
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="header">
+        <h1 id="current-date-display">Today</h1>
+        <p id="full-date">Wednesday, 12 January</p>
 
-        <!-- Action Buttons -->
-         <div class="task-button">
-          <button class="add-task">Add</button>
-          <button class="cancel-task" onclick="closeTaskPanel()">Cancel</button>
-         </div>
+        <div class="task-actions">
+          <button id="add-task-btn" class="add-btn"><i class="fas fa-plus"></i> Add Tasks</button>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search">
+          </div>
+          <button class="sort-btn"><i class="fas fa-sort"></i> Sort</button>
+          <button class="more-btn"><i class="fas fa-ellipsis-h"></i></button>
+        </div>
+      </div>
+
+      <div class="tasks-container" id="tasks-container">
+        <!-- Tasks will be dynamically added here -->
+      </div>
+
+      <div class="section-header" id="overdue-header">
+        <i class="fas fa-chevron-down"></i>
+        <span>Overdue</span>
+      </div>
+
+      <div class="tasks-container" id="overdue-tasks-container">
+        <!-- Overdue tasks will be dynamically added here -->
+      </div>
+
+      <div class="footer">
+        <button id="clear-all-btn" class="clear-btn">Clear All</button>
       </div>
     </div>
 
+    <!-- Task Detail Sidebar -->
+    <div class="task-detail-sidebar" id="task-detail-sidebar">
+      <div class="detail-header">
+        <button id="close-detail-btn" class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="detail-content">
+        <div class="input-group">
+          <input type="text" id="task-title-input" placeholder="Title" class="title-input">
+          <button class="favorite-btn"><i class="far fa-star"></i></button>
+        </div>
+
+        <div class="input-group">
+          <button class="add-step-btn"><i class="fas fa-plus"></i> Add Step</button>
+        </div>
+        <div id="steps-container" class="steps-container"></div>
+        <div class="step-input-container">
+          <input type="text" id="step-input" placeholder="Add a step" class="step-input">
+        </div>
+
+        <div class="date-section">
+          <div class="section-label">
+            <i class="far fa-calendar"></i>
+            <span>Date</span>
+          </div>
+          <input type="date" id="task-date">
+        </div>
+
+        <div class="priority-section">
+          <div class="section-label">Priority</div>
+          <div class="priority-options">
+            <label class="priority-option">
+              <input type="radio" name="priority" value="high">
+              <span>High</span>
+            </label>
+            <label class="priority-option">
+              <input type="radio" name="priority" value="medium">
+              <span>Medium</span>
+            </label>
+            <label class="priority-option">
+              <input type="radio" name="priority" value="low">
+              <span>Low</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="category-selection">
+          <div class="section-label">Choose Category</div>
+          <select id="category-dropdown" class="category-dropdown">
+            <option value="">Select a category</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Exercise & Health">Exercise & Health</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Finance">Finance</option>
+          </select>
+        </div>
+
+        <div class="date-section">
+          <div class="section-label">
+            <i class="far fa-calendar"></i>
+            <span>Due Date</span>
+          </div>
+          <input type="date" id="task-due-date">
+        </div>
+
+        <div class="file-section">
+          <div class="section-label">Add Files</div>
+          <div class="file-upload">
+            <label for="file-upload" class="file-upload-label">
+              <i class="far fa-file"></i>
+              <span>Choose files</span>
+            </label>
+            <input type="file" id="file-upload" multiple class="file-upload-input">
+          </div>
+          <div id="files-list" class="files-list"></div>
+        </div>
+
+        <div class="note-section">
+          <div class="section-label">Add Note</div>
+          <textarea id="task-note" rows="4"></textarea>
+        </div>
+
+        <div class="detail-actions">
+          <button id="save-task-btn" class="save-btn">Add</button>
+          <button id="cancel-task-btn" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <script src="/auth-app/public/js/toggle-dropdown.js"></script>
-  <script src="/auth-app/public/js/task-panel.js"></script>
+
+  <div class="overlay" id="overlay"></div>
+
+  <script src="/auth-app/public/js/home-page.js"></script>
 </body>
 </html>
