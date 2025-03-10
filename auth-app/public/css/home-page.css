@@ -217,6 +217,19 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  width: 100%;
+}
+
+.task-title .task-name .task-name-starIcon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.task-title .task-name .task-name-starIcon i {
+  margin: 0;
+  text-align: right;
+  width: 100%;
 }
 
 .task-title input {
@@ -271,7 +284,6 @@
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
   cursor: pointer;
 }
 
@@ -297,6 +309,22 @@
 }
 
 .task-option form input::placeholder {
+  color: white;
+}
+
+.task-option select {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.task-option select option {
+  background-color: #333;
   color: white;
 }
 
@@ -396,7 +424,7 @@
 }
 
 .task-note textarea {
-  width: 100%;
+  width: 95%;
   height: 100px;
   background: #333;
   color: white;
@@ -422,8 +450,3 @@
   width: 100%;
 
 }
-
-#main-content.shrink {
-  margin-right: 30%;
-}
-
