@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileUpload = document.getElementById('file-upload');
   const filesList = document.getElementById('files-list');
   const searchInput = document.querySelector('.search-box input');
+  const profileImg = document.getElementById('profile-img');
+  const categoryHeader = document.getElementById('category-header');
 
   // State
   let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
@@ -600,4 +602,33 @@ document.addEventListener('DOMContentLoaded', () => {
       renderTasks();
     }
   });
+
+  // Event listener for profile image click
+  profileImg.addEventListener('click', () => {
+    window.location.href = '/auth-app/views/profile.html';
+  });
+
+  // Event listener for category header click
+  categoryHeader.addEventListener('click', () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowDateString = tomorrow.toISOString().split('T')[0];
+
+    const tasksDueTomorrow = tasks.filter(task => task.dueDate === tomorrowDateString);
+    const taskTitles = tasksDueTomorrow.map(task => task.title).join(', ');
+
+    if (taskTitles) {
+      alert(`Tasks due tomorrow: ${taskTitles}`);
+    } else {
+      alert('No tasks due tomorrow.');
+    }
+  });
+
+  // Example function to show the task detail sidebar
+  function showTaskDetailSidebar() {
+    taskDetailSidebar.classList.add('show');
+  }
+
+  // Example usage
+  document.getElementById('add-task-btn').addEventListener('click', showTaskDetailSidebar);
 });
