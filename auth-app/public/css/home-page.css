@@ -15,11 +15,13 @@
   --low-priority: #4caf50;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -58,6 +60,13 @@ body {
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.profile-img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
 
 .user-info h3 {
@@ -110,14 +119,28 @@ body {
   display: block;
 }
 
-.category-item {
+.upcomings-container {
+  margin-top: 5px;
+}
+
+.upcoming-task-item {
   padding: 8px 0 8px 10px;
   font-size: 14px;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.category-item:hover {
+.upcoming-task-item:hover {
   color: var(--accent-color);
+}
+
+.no-upcoming-tasks {
+  padding: 8px 0 8px 10px;
+  font-size: 14px;
+  color: var(--secondary-text);
+  font-style: italic;
 }
 
 /* Main Content Styles */
@@ -206,9 +229,9 @@ body {
   background-color: white;
   border: 1px solid var(--border-color);
   border-radius: 4px;
+  z-index: 100;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   min-width: 200px;
-  z-index: 10;
   display: none;
 }
 
@@ -270,14 +293,19 @@ body {
 }
 
 .task-title {
-  font-size: 24px;
+  font-size: 16px;
   margin-bottom: 5px;
   font-weight: 500;
 }
 
 .task-info {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--secondary-text);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  line-height: 1.5;
 }
 
 .task-card {
@@ -289,7 +317,6 @@ body {
   display: flex;
   align-items: center;
   position: relative;
-  z-index: 1;
 }
 
 .task-actions {
@@ -340,6 +367,12 @@ body {
   padding: 8px 15px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/* Hide clear all button in categories view */
+.sidebar-menu .menu-item.active[data-category="categories"] ~ .footer .clear-btn,
+.menu-item.active[data-view="categories"] ~ .footer .clear-btn {
+  display: none !important;
 }
 
 /* Task Detail Sidebar */
@@ -429,7 +462,7 @@ body {
 
 .priority-options {
   display: flex;
-  gap: 30px;
+  justify-content: space-between;
 }
 
 .priority-option {
@@ -462,7 +495,24 @@ body {
 .step-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
+}
+
+.remove-step-btn {
+  background: none;
+  border: none;
+  color: #ff4d4d;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove-step-btn:hover {
+  background-color: rgba(255, 77, 77, 0.1);
 }
 
 .steps-container {

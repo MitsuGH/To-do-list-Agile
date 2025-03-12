@@ -17,8 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileUpload = document.getElementById('file-upload');
   const filesList = document.getElementById('files-list');
   const searchInput = document.querySelector('.search-box input');
-  const profileImg = document.getElementById('profile-img');
-  const categoryHeader = document.getElementById('category-header');
+  const favoriteBtn = document.querySelector('.detail-content .favorite-btn'); // Added
 
   // State
   let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
@@ -115,12 +114,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('task-note').value = task.note || '';
         steps = task.steps || [];
         uploadedFiles = task.files || [];
+
+        // Update favorite icon
+        const favoriteIcon = favoriteBtn.querySelector('i');
+        if (favoriteIcon) {
+          favoriteIcon.className = task.favorite ? 'fas fa-star' : 'far fa-star';
+        }
+
         renderSteps();
         renderFiles();
       }
     } else {
       isEditing = false;
       currentTaskId = null;
+
+      // Reset favorite icon
+      const favoriteIcon = favoriteBtn.querySelector('i');
+      if (favoriteIcon) {
+        favoriteIcon.className = 'far fa-star';
+      }
     }
   };
 
@@ -157,20 +169,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const infoText = document.createElement('div');
     infoText.className = 'task-info';
-    
-    // Format: "Category • Added Date • Due Date" with icons
-    let infoString = task.category || 'Task';
-    
+
+    // Format: "Priority • Category • Added Date • Due Date" with icons and increased spacing
+    let infoString = '';
+
+    // Priority first with appropriate icon and color
+    if (task.priority) {
+      const priorityColors = {
+        high: 'var(--high-priority)',
+        medium: 'var(--medium-priority)',
+        low: 'var(--low-priority)'
+      };
+      const color = priorityColors[task.priority] || 'var(--medium-priority)';
+      infoString += `<span style="color: ${color}"><i class="fas fa-flag" style="margin-right: 5px;"></i>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</span>`;
+    }
+
+    // Add category next
+    if (infoString) {
+      infoString += ` &nbsp;&nbsp;•&nbsp;&nbsp; `;
+    }
+    infoString += `<i class="fa-solid fa-list" style="margin-right: 5px;"></i>${task.category || 'Task'}`;
+
     if (task.createdDate) {
-      infoString += ` • <i class="far fa-calendar"></i> ${formatDate(task.createdDate)}`;
+      infoString += ` &nbsp;&nbsp;•&nbsp;&nbsp; <i class="far fa-calendar" style="margin-right: 5px;"></i>${formatDate(task.createdDate)}`;
     }
-    
+
     if (task.dueDate) {
-      infoString += ` • <i class="fa-regular fa-calendar-minus"></i> ${formatDate(task.dueDate)}`;
+      infoString += ` &nbsp;&nbsp;•&nbsp;&nbsp; <i class="fa-regular fa-calendar-xmark" style="margin-right: 5px;"></i>${formatDate(task.dueDate)}`;
     }
-    
+
     infoText.innerHTML = infoString;
-    
+
     content.appendChild(title);
     content.appendChild(infoText);
 
@@ -281,18 +310,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // New function to render tasks grouped by categories
+  const renderTasksByCategory = () => {
+    tasksContainer.innerHTML = '';
+    overdueTasksContainer.innerHTML = '';
+    overdueHeader.style.display = 'none';
+    overdueTasksContainer.style.display = 'none';
+
+    // Get all active tasks (not completed)
+    const activeTasks = tasks.filter(task => !task.completed);
+
+    // Group tasks by category
+    const tasksByCategory = {};
+
+    activeTasks.forEach(task => {
+      const category = task.category || 'Uncategorized';
+      if (!tasksByCategory[category]) {
+        tasksByCategory[category] = [];
+      }
+      tasksByCategory[category].push(task);
+    });
+
+    // Create category sections
+    Object.keys(tasksByCategory).forEach(category => {
+      // Create category header
+      const categoryHeader = document.createElement('div');
+      categoryHeader.className = 'section-header';
+      categoryHeader.innerHTML = `
+        <i class="fas fa-chevron-down"></i>
+        <span>${category}</span>
+      `;
+
+      // Create container for this category's tasks
+      const categoryContainer = document.createElement('div');
+      categoryContainer.className = 'tasks-container';
+
+      // Add tasks to category container
+      tasksByCategory[category].forEach(task => {
+        categoryContainer.appendChild(createTaskElement(task));
+      });
+
+      // Add collapse/expand functionality
+      categoryHeader.addEventListener('click', () => {
+        categoryContainer.style.display =
+          categoryContainer.style.display === 'none' ? 'block' : 'none';
+
+        // Toggle chevron icon
+        const icon = categoryHeader.querySelector('i');
+        icon.className = categoryContainer.style.display === 'none'
+          ? 'fas fa-chevron-right'
+          : 'fas fa-chevron-down';
+      });
+
+      // Add to main container
+      tasksContainer.appendChild(categoryHeader);
+      tasksContainer.appendChild(categoryContainer);
+    });
+  };
+
   // Create sort dropdown
   const sortBtn = document.querySelector('.sort-btn');
   const sortDropdown = document.createElement('div');
   sortDropdown.className = 'sort-dropdown';
-  
+
   const sortOptions = [
     { label: 'Due Date', key: 'dueDate', direction: 'asc', directionLabel: 'Soonest to Latest' },
     { label: 'Priority', key: 'priority', direction: 'desc', directionLabel: 'High to Low' },
     { label: 'Alphabetically', key: 'title', direction: 'asc', directionLabel: 'A to Z' },
     { label: 'Creation Date', key: 'createdDate', direction: 'desc', directionLabel: 'Newest First' }
   ];
-  
+
   sortOptions.forEach(option => {
     const sortOptionElement = document.createElement('div');
     sortOptionElement.className = 'sort-option';
@@ -300,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <span>${option.label}</span>
       <span class="sort-option-direction">${option.directionLabel}</span>
     `;
-    
+
     sortOptionElement.addEventListener('click', () => {
       sortTasks(option.key, option.direction);
       // Toggle direction for next click
@@ -309,12 +396,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sortOptionElement.querySelector('.sort-option-direction').textContent = option.directionLabel;
       sortDropdown.classList.remove('show');
     });
-    
+
     sortDropdown.appendChild(sortOptionElement);
   });
-  
+
   sortBtn.appendChild(sortDropdown);
-  
+
   function getDirectionLabel(type, direction) {
     switch (type) {
       case 'Due Date':
@@ -329,16 +416,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return '';
     }
   }
-  
+
   function sortTasks(key, direction) {
     tasks.sort((a, b) => {
       let valueA, valueB;
-      
+
       // Handle missing values
       if (!a[key] && !b[key]) return 0;
       if (!a[key]) return direction === 'asc' ? 1 : -1;
       if (!b[key]) return direction === 'asc' ? -1 : 1;
-      
+
       // Sort by priority specially
       if (key === 'priority') {
         const priorityOrder = { high: 3, medium: 2, low: 1 };
@@ -348,32 +435,32 @@ document.addEventListener('DOMContentLoaded', () => {
         valueA = a[key];
         valueB = b[key];
       }
-      
+
       if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return direction === 'asc' 
-          ? valueA.localeCompare(valueB) 
+        return direction === 'asc'
+          ? valueA.localeCompare(valueB)
           : valueB.localeCompare(valueA);
       } else {
         return direction === 'asc' ? (valueA - valueB) : (valueB - valueA);
       }
     });
-    
+
     saveTasksToStorage();
     renderTasks();
   }
-  
+
   sortBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     sortDropdown.classList.toggle('show');
   });
-  
+
   // Close dropdown when clicking elsewhere
   document.addEventListener('click', (e) => {
     if (!sortBtn.contains(e.target)) {
       sortDropdown.classList.remove('show');
     }
   });
-  
+
   // Event Listeners
   addTaskBtn.addEventListener('click', () => openTaskDetailSidebar());
   closeDetailBtn.addEventListener('click', closeTaskDetailSidebar);
@@ -387,13 +474,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (item.querySelector('span').textContent === 'Dashboard') {
         currentView = 'dashboard';
+        clearAllBtn.style.display = 'block';
+        renderTasks();
       } else if (item.querySelector('span').textContent === 'Favorites') {
         currentView = 'favorites';
+        clearAllBtn.style.display = 'block';
+        renderTasks();
       } else if (item.querySelector('span').textContent === 'Completed') {
         currentView = 'completed';
+        clearAllBtn.style.display = 'block';
+        renderTasks();
+      } else if (item.querySelector('span').textContent === 'Categories') {
+        currentView = 'categories';
+        clearAllBtn.style.display = 'none'; // Hide clear all button for Categories view
+        renderTasksByCategory();
       }
-
-      renderTasks();
     });
   });
 
@@ -431,45 +526,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
   cancelTaskBtn.addEventListener('click', closeTaskDetailSidebar);
 
-  clearAllBtn.addEventListener('click', async () => {
-    let tasksToDelete = [];
 
-    // Filter tasks based on current view
-    if (currentView === 'dashboard') {
-      tasksToDelete = tasks.filter(task => !task.completed);
-    } else if (currentView === 'favorites') {
-      tasksToDelete = tasks.filter(task => task.favorite);
-    } else if (currentView === 'completed') {
-      tasksToDelete = tasks.filter(task => task.completed);
-    }
+  // Upcomings section functionality
+  const upcomingsHeader = document.getElementById('upcomings-header');
+  const upcomingsContainer = document.getElementById('upcomings-container');
 
-    if (tasksToDelete.length === 0) {
-      alert('No tasks to clear in this view.');
-      return;
-    }
+  upcomingsContainer.style.display = 'none'; // Initially hidden
 
-    const confirmed = confirm(`Are you sure you want to clear all tasks in the ${currentView} view?`);
-    if (confirmed) {
-      for (const task of tasksToDelete) {
-        await deleteTask(task.id);
-      }
+  upcomingsHeader.addEventListener('click', () => {
+    // Toggle display of upcomings container
+    const isVisible = upcomingsContainer.style.display === 'block';
+    upcomingsContainer.style.display = isVisible ? 'none' : 'block';
+
+    // Update the chevron icon
+    const icon = upcomingsHeader.querySelector('i');
+    icon.className = isVisible ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+
+    if (!isVisible) {
+      // When opening, populate with tasks due tomorrow
+      renderUpcomingTasks();
     }
   });
-  
+
+  function renderUpcomingTasks() {
+    upcomingsContainer.innerHTML = '';
+
+    // Get tomorrow's date
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowDateStr = tomorrow.toISOString().split('T')[0];
+
+    // Find tasks due tomorrow
+    const tomorrowTasks = tasks.filter(task => {
+      return task.dueDate === tomorrowDateStr && !task.completed;
+    });
+
+    // Display tasks or a message
+    if (tomorrowTasks.length > 0) {
+      tomorrowTasks.forEach(task => {
+        const taskItem = document.createElement('div');
+        taskItem.className = 'upcoming-task-item';
+        taskItem.textContent = task.title;
+        taskItem.addEventListener('click', () => {
+          openTaskDetailSidebar(task.id);
+        });
+        upcomingsContainer.appendChild(taskItem);
+      });
+    } else {
+      const noTasksMsg = document.createElement('div');
+      noTasksMsg.className = 'no-upcoming-tasks';
+      noTasksMsg.textContent = 'No tasks due tomorrow';
+      upcomingsContainer.appendChild(noTasksMsg);
+    }
+
+    // No alerts anymore
+  }
+
   // Initial fetch
   fetchTasks();
 
   // Step Management
   const stepInputContainer = document.querySelector('.step-input-container');
   stepInputContainer.style.display = 'none';
-  
+
   addStepBtn.addEventListener('click', () => {
     // Toggle between button and input field
     addStepBtn.style.display = 'none';
     stepInputContainer.style.display = 'block';
     stepInput.focus();
   });
-  
+
   stepInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       addStep();
@@ -477,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stepInput.focus();
     }
   });
-  
+
   stepInput.addEventListener('blur', () => {
     if (stepInput.value.trim() === '') {
       // If input is empty when blurred, show the button again
@@ -499,15 +625,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderSteps() {
     if (!stepsContainer) return;
-    
+
     stepsContainer.innerHTML = '';
     steps.forEach((step, index) => {
       const stepElement = document.createElement('div');
       stepElement.className = 'step-item';
-      
+
       const stepContent = document.createElement('div');
       stepContent.innerHTML = `${index + 1}. ${step}`;
-      
+
       const removeBtn = document.createElement('button');
       removeBtn.innerHTML = '<i class="fas fa-times"></i>';
       removeBtn.className = 'remove-step-btn';
@@ -515,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
         steps.splice(index, 1);
         renderSteps();
       });
-      
+
       stepElement.appendChild(stepContent);
       stepElement.appendChild(removeBtn);
       stepsContainer.appendChild(stepElement);
@@ -533,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('You can only upload a maximum of 3 files.');
         return;
       }
-      
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         uploadedFiles.push({
@@ -542,7 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
           size: file.size
         });
       }
-      
+
       renderFiles();
       fileUpload.value = ''; // Reset input
     }
@@ -550,16 +676,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderFiles() {
     if (!filesList) return;
-    
+
     filesList.innerHTML = '';
     uploadedFiles.forEach((file, index) => {
       const fileItem = document.createElement('div');
       fileItem.className = 'file-item';
-      
+
       const fileName = document.createElement('div');
       fileName.className = 'file-name';
       fileName.textContent = file.name;
-      
+
       const removeBtn = document.createElement('button');
       removeBtn.className = 'file-remove';
       removeBtn.innerHTML = '<i class="fas fa-times"></i>';
@@ -567,34 +693,61 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadedFiles.splice(index, 1);
         renderFiles();
       });
-      
+
       fileItem.appendChild(fileName);
       fileItem.appendChild(removeBtn);
       filesList.appendChild(fileItem);
     });
   }
 
-  // Clear All button repositioning
+  // Clear All button repositioning and functionality
   clearAllBtn.style.position = 'absolute';
   clearAllBtn.style.bottom = '20px';
   clearAllBtn.style.right = '20px';
   
+  // Add event listener for clear all button
+  clearAllBtn.addEventListener('click', () => {
+    // Different behavior based on current view
+    if (currentView === 'dashboard') {
+      // For dashboard, clear all incomplete tasks
+      if (confirm('Are you sure you want to clear all tasks?')) {
+        tasks = tasks.filter(task => task.completed);
+        saveTasksToStorage();
+        renderTasks();
+      }
+    } else if (currentView === 'favorites') {
+      // For favorites, clear favorite status from all tasks
+      if (confirm('Are you sure you want to clear all favorites?')) {
+        tasks = tasks.map(task => ({...task, favorite: false}));
+        saveTasksToStorage();
+        renderTasks();
+      }
+    } else if (currentView === 'completed') {
+      // For completed, clear all completed tasks
+      if (confirm('Are you sure you want to clear all completed tasks?')) {
+        tasks = tasks.filter(task => !task.completed);
+        saveTasksToStorage();
+        renderTasks();
+      }
+    }
+  });
+
   // Search functionality
   searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
-    
+
     if (searchTerm.length > 0) {
-      const filteredTasks = tasks.filter(task => 
+      const filteredTasks = tasks.filter(task =>
         task.title.toLowerCase().includes(searchTerm)
       );
-      
+
       // Temporarily store current tasks view
       const currentTasks = [...tasks];
-      
+
       // Replace with filtered results and render
       tasks = filteredTasks;
       renderTasks();
-      
+
       // Restore original tasks
       tasks = currentTasks;
     } else {
@@ -603,32 +756,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Event listener for profile image click
-  profileImg.addEventListener('click', () => {
-    window.location.href = '/auth-app/views/profile.html';
-  });
-
-  // Event listener for category header click
-  categoryHeader.addEventListener('click', () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowDateString = tomorrow.toISOString().split('T')[0];
-
-    const tasksDueTomorrow = tasks.filter(task => task.dueDate === tomorrowDateString);
-    const taskTitles = tasksDueTomorrow.map(task => task.title).join(', ');
-
-    if (taskTitles) {
-      alert(`Tasks due tomorrow: ${taskTitles}`);
-    } else {
-      alert('No tasks due tomorrow.');
+  // Add event listener for favorite button in task detail sidebar
+  favoriteBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const task = tasks.find(t => t.id === currentTaskId);
+    if (task) {
+      await updateTask(currentTaskId, { ...task, favorite: !task.favorite });
     }
-  });
+  })
 
-  // Example function to show the task detail sidebar
-  function showTaskDetailSidebar() {
-    taskDetailSidebar.classList.add('show');
-  }
-
-  // Example usage
-  document.getElementById('add-task-btn').addEventListener('click', showTaskDetailSidebar);
 });

@@ -1,196 +1,204 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Settings Dashboard</title>
-  <link rel="stylesheet" href="/auth-app/public/css/profile.css">
+  <title>My Settings - TodoList</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/auth-app/public/css/profile.css">
+  <link rel="stylesheet" href="/auth-app/public/css/home-page.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Back Arrow -->
-    <a href="/auth-app/views/home-page.html" class="back-arrow">
-      <i class="fas fa-arrow-left"></i> Back
-    </a>
-
-    <h1>My Settings</h1>
-    
-    <div class="tabs">
-      <div class="tab active" data-tab="profile">Profile</div>
-      <div class="tab" data-tab="security">Security</div>
-      <div class="tab" data-tab="themes">Themes</div>
-      <div class="tab" data-tab="notifications">Notifications</div>
-    </div>
-    
-    <!-- Profile Section -->
-    <div id="profile-section" class="content-section active">
-      <div class="avatar-container">
-        <div class="avatar">
-          <img id="avatar-preview" src="/api/placeholder/128/128" alt="Profile avatar">
+  <div class="app-container">
+    <div class="sidebar">
+      <div class="user-profile">
+        <div class="profile-img">
+          <i class="fas fa-user"></i>
         </div>
-        <button class="change-photo-btn">Change Photo</button>
+        <div class="user-info">
+          <h3 id="profile-name">Username</h3>
+          <p id="profile-email">user@example.com</p>
+        </div>
       </div>
       
-      <form id="profile-form">
-        <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" placeholder="Enter your full name">
-        </div>
-        
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="Enter your email address">
-        </div>
-        
-        <div class="form-group">
-          <label for="location">Location</label>
-          <input type="text" id="location" placeholder="Enter your location">
-        </div>
-        
-        <div class="form-group">
-          <label for="occupation">Occupation</label>
-          <input type="text" id="occupation" placeholder="Enter your occupation">
-        </div>
-        
-        <div class="actions">
-          <button type="submit" class="btn btn-primary">Save Changes</button>
-          <button type="button" class="btn btn-secondary">Logout</button>
-        </div>
-      </form>
+      <div class="sidebar-menu">
+        <a href="home-page.html" class="menu-item">
+          <i class="fas fa-chevron-left"></i>
+          <span>Back to Dashboard</span>
+        </a>
+      </div>
     </div>
     
-    <!-- Security Section -->
-    <div id="security-section" class="content-section">
-      <form id="security-form">
-        <div class="form-group">
-          <label for="current-password">Current Password</label>
-          <input type="password" id="current-password" value="•••••••" required>
+    <div class="main-content">
+      <div class="settings-container">
+        <h1>My Settings</h1>
+        
+        <div class="settings-tabs">
+          <div class="settings-tab active" data-tab="profile">Profile</div>
+          <div class="settings-tab" data-tab="security">Security</div>
+          <div class="settings-tab" data-tab="themes">Themes</div>
+          <div class="settings-tab" data-tab="notifications">Notifications</div>
         </div>
         
-        <div class="form-group">
-          <label for="new-password">New Password</label>
-          <input type="password" id="new-password" placeholder="Enter New Password" required>
+        <!-- Profile Tab Content -->
+        <div class="tab-content active" id="profile-tab">
+          <div class="profile-avatar-section">
+            <div class="profile-avatar">
+              <img id="profile-avatar-img" src="https://via.placeholder.com/150" alt="Profile avatar">
+            </div>
+            <button class="change-photo-btn">Change Photo</button>
+          </div>
+          
+          <div class="profile-form">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" id="fullName" placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="Enter your email address">
+            </div>
+            
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input type="text" id="location" placeholder="Enter your location">
+            </div>
+            
+            <div class="form-group">
+              <label for="occupation">Occupation</label>
+              <input type="text" id="occupation" placeholder="Enter your occupation">
+            </div>
+            
+            <button class="save-profile-btn">Save Changes</button>
+          </div>
         </div>
         
-        <div class="form-group">
-          <label for="confirm-password">Confirm Password</label>
-          <input type="password" id="confirm-password" placeholder="Confirm New Password" required>
+        <!-- Security Tab Content -->
+        <div class="tab-content" id="security-tab">
+          <div class="security-form">
+            <div class="form-group">
+              <label for="currentPassword">Current Password</label>
+              <input type="password" id="currentPassword" placeholder="••••••">
+            </div>
+            
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <input type="password" id="newPassword" placeholder="Enter New Password">
+            </div>
+            
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" placeholder="Confirm New Password">
+            </div>
+            
+            <div class="form-group toggle-group">
+              <div>
+                <label>Two-factor authentication (2FA)</label>
+                <p class="form-help-text">Keep your account secure by enabling 2FA via SMS or using a temporary one-time passcode (TOTP) from an authenticator app.</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="twoFAToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            
+            <button class="update-password-btn">Update Password</button>
+          </div>
         </div>
         
-        <div class="form-group">
-          <label>Two-factor authentication (2FA)</label>
-          <div class="toggle-container">
-            <p class="toggle-description">Keep your account secure by enabling 2FA via SMS or using a temporary one-time passcode (TOTP) from an authenticator app.</p>
-            <label class="toggle">
-              <input type="checkbox" id="2fa-toggle-input">
-              <span class="slider"></span>
+        <!-- Themes Tab Content -->
+        <div class="tab-content" id="themes-tab">
+          <h2>Customize your Workspace</h2>
+          <p>Customize your Workspace by changing the appearance and theme color.</p>
+          
+          <div class="theme-section">
+            <h3>Appearance</h3>
+            <div class="appearance-options">
+              <div class="appearance-option light active">
+                <div class="option-preview light-preview"></div>
+                <span>Light</span>
+              </div>
+              <div class="appearance-option dark">
+                <div class="option-preview dark-preview"></div>
+                <span>Dark</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="theme-section">
+            <h3>Theme Color</h3>
+            <div class="color-options">
+              <div class="color-option purple" style="--color: #9c27b0">
+                <span>Purple</span>
+              </div>
+              <div class="color-option blue active" style="--color: #3a86ff">
+                <span>Blue</span>
+              </div>
+              <div class="color-option pink" style="--color: #e91e63">
+                <span>Pink</span>
+              </div>
+              <div class="color-option violet" style="--color: #673ab7">
+                <span>Violet</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Notifications Tab Content -->
+        <div class="tab-content" id="notifications-tab">
+          <div class="notification-setting">
+            <div>
+              <h3>Enable Notifications</h3>
+              <p>Receive notifications for important updates and reminders</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="enableNotifications">
+              <span class="toggle-slider"></span>
             </label>
           </div>
-        </div>
-        
-        <button type="submit" class="btn btn-primary">Update Password</button>
-      </form>
-    </div>
-    
-    <!-- Themes Section -->
-    <div id="themes-section" class="content-section">
-      <h2 class="section-title">Customize your Workspace</h2>
-      <p class="section-description">Customize your Workspace by changing the appearance and theme color.</p>
-      
-      <h3 class="section-title">Appearance</h3>
-      <div class="appearance-options">
-        <div class="appearance-card appearance-light selected" data-appearance="light">
-          <div class="circle"></div>
-        </div>
-        <div class="appearance-card appearance-dark" data-appearance="dark">
-          <div class="circle"></div>
-        </div>
-      </div>
-      
-      <h3 class="section-title">Theme Color</h3>
-      <div class="color-options">
-        <div class="color-card" data-color="purple">
-          <div class="color-circle purple"></div>
-          <div class="color-name">Purple</div>
-        </div>
-        <div class="color-card" data-color="blue">
-          <div class="color-circle blue"></div>
-          <div class="color-name">Blue</div>
-        </div>
-        <div class="color-card selected" data-color="pink">
-          <div class="color-circle pink"></div>
-          <div class="color-name">Pink</div>
-        </div>
-        <div class="color-card" data-color="violet">
-          <div class="color-circle violet"></div>
-          <div class="color-name">Violet</div>
-        </div>
-        <div class="color-card" data-color="indigo">
-          <div class="color-circle indigo"></div>
-          <div class="color-name">Indigo</div>
-        </div>
-        <div class="color-card" data-color="orange">
-          <div class="color-circle orange"></div>
-          <div class="color-name">Orange</div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Notifications Section -->
-    <div id="notifications-section" class="content-section">
-      <div class="notification-item main">
-        <div class="notification-details">
-          <div class="notification-title">Enable Notifications</div>
-          <div class="notification-description">Receive notifications for important updates and reminders</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="main-notification-toggle">
-          <span class="slider"></span>
-        </label>
-      </div>
-      
-      <div class="notification-group">
-        <div class="notification-item">
-          <div class="notification-details">
-            <div class="notification-title">Task Reminders</div>
-            <div class="notification-description">Get notified 1 day before due date</div>
+          
+          <div class="notification-setting">
+            <div>
+              <h3>Task Reminders</h3>
+              <p>Get notified 1 day before due date</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="taskReminders">
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <label class="toggle">
-            <input type="checkbox" class="notification-toggle">
-            <span class="slider"></span>
-          </label>
-        </div>
-        
-        <div class="notification-item">
-          <div class="notification-details">
-            <div class="notification-title">Task Updates</div>
-            <div class="notification-description">Notify when tasks are updated</div>
+          
+          <div class="notification-setting">
+            <div>
+              <h3>Task Updates</h3>
+              <p>Notify when tasks are updated</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="taskUpdates">
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <label class="toggle">
-            <input type="checkbox" class="notification-toggle">
-            <span class="slider"></span>
-          </label>
-        </div>
-        
-        <div class="notification-item">
-          <div class="notification-details">
-            <div class="notification-title">System Alerts</div>
-            <div class="notification-description">Important system notifications</div>
+          
+          <div class="notification-setting">
+            <div>
+              <h3>System Alerts</h3>
+              <p>Important system notifications</p>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="systemAlerts">
+              <span class="toggle-slider"></span>
+            </label>
           </div>
-          <label class="toggle">
-            <input type="checkbox" class="notification-toggle">
-            <span class="slider"></span>
-          </label>
         </div>
       </div>
     </div>
   </div>
-
+  
   <script src="/auth-app/public/js/profile.js"></script>
 </body>
 </html>
