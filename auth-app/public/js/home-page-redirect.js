@@ -21,3 +21,18 @@ function checkAuth() {
 
 // Add to auth pages
 document.addEventListener('DOMContentLoaded', checkAuth);
+document.addEventListener('DOMContentLoaded', function() {
+  // Get profile image element
+  const profileImage = document.querySelector('.profile-img');
+  
+  // Add click event listener to profile image
+  if (profileImage) {
+    profileImage.addEventListener('click', function() {
+      // Redirect to profile page
+      window.location.href = 'profile.html';
+    });
+    
+    // Add cursor style to indicate it's clickable
+    profileImage.style.cursor = 'pointer';
+  }
+});

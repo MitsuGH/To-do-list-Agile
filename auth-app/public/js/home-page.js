@@ -1,3 +1,377 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM Elements
+  const addTaskBtn = document.getElementById('add-task-btn');
+  const taskDetailSidebar = document.getElementById('task-detail-sidebar');
+  const overlay = document.getElementById('overlay');
+  const closeDetailBtn = document.getElementById('close-detail-btn');
+  const saveTaskBtn = document.getElementById('save-task-btn');
+  const cancelTaskBtn = document.getElementById('cancel-task-btn');
+  const tasksContainer = document.getElementById('tasks-container');
+  const overdueTasksContainer = document.getElementById('overdue-tasks-container');
+  const clearAllBtn = document.getElementById('clear-all-btn');
+  const overdueHeader = document.getElementById('overdue-header');
+  const fullDateElement = document.getElementById('full-date');
+  const addStepBtn = document.querySelector('.add-step-btn');
+  const stepsContainer = document.getElementById('steps-container');
+  const stepInput = document.getElementById('step-input');
+  const fileUpload = document.getElementById('file-upload');
+  const filesList = document.getElementById('files-list');
+  const searchInput = document.querySelector('.search-box input');
+  const favoriteBtn = document.querySelector('.detail-content .favorite-btn');
+
+  // State
+  let tasks = [];
+  let currentTaskId = null;
+  let isEditing = false;
+  let currentView = 'dashboard';
+  let steps = [];
+  let uploadedFiles = [];
+  
+  // Get current user from localStorage
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  const userId = currentUser.id || 1; // Default to 1 for testing if no user found
+
+  // Load tasks from API
+  const loadTasks = async () => {
+    try {
+      const response = await fetch(`/api/tasks?userId=${userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        tasks = data;
+        renderTasks();
+      } else {
+        console.error('Failed to fetch tasks');
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  // Create a new task in the database
+  const createTask = async (taskData) => {
+    try {
+      const response = await fetch('/api/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          title: taskData.title,
+          description: taskData.note,
+          dueDate: taskData.dueDate,
+          priority: taskData.priority
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Task created successfully:', result);
+        loadTasks(); // Reload tasks after creation
+      } else {
+        console.error('Failed to create task');
+      }
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
+  };
+
+  // Update an existing task
+  const updateTask = async (taskId, taskData) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: taskData.title,
+          description: taskData.note,
+          dueDate: taskData.dueDate,
+          priority: taskData.priority
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Task updated successfully');
+        loadTasks(); // Reload tasks after update
+      } else {
+        console.error('Failed to update task');
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
+
+  // Delete a task
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        console.log('Task deleted successfully');
+        loadTasks(); // Reload tasks after deletion
+      } else {
+        console.error('Failed to delete task');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
+
+  // Mark task as favorite
+  const markAsFavorite = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/favorite`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Task marked as favorite');
+        loadTasks(); // Reload tasks
+      } else {
+        console.error('Failed to mark task as favorite');
+      }
+    } catch (error) {
+      console.error('Error marking task as favorite:', error);
+    }
+  };
+
+  // Remove from favorites
+  const removeFromFavorites = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/favorite?userId=${userId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('Task removed from favorites');
+        loadTasks(); // Reload tasks
+      } else {
+        console.error('Failed to remove from favorites');
+      }
+    } catch (error) {
+      console.error('Error removing from favorites:', error);
+    }
+  };
+
+  // Mark task as completed
+  const markAsCompleted = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/complete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Task marked as completed');
+        loadTasks(); // Reload tasks
+      } else {
+        console.error('Failed to mark task as completed');
+      }
+    } catch (error) {
+      console.error('Error marking task as completed:', error);
+    }
+  };
+
+  // Mark task as incomplete
+  const markAsIncomplete = async (taskId) => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/complete?userId=${userId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('Task marked as incomplete');
+        loadTasks(); // Reload tasks
+      } else {
+        console.error('Failed to mark as incomplete');
+      }
+    } catch (error) {
+      console.error('Error marking as incomplete:', error);
+    }
+  };
+
+  // Render tasks in the UI
+  const renderTasks = () => {
+    tasksContainer.innerHTML = '';
+    
+    if (tasks.length === 0) {
+      tasksContainer.innerHTML = '<p class="no-tasks">No tasks found. Click "Add Task" to create one.</p>';
+      return;
+    }
+
+    tasks.forEach(task => {
+      const taskElement = document.createElement('div');
+      taskElement.className = 'task-card';
+      taskElement.dataset.id = task.task_id;
+      
+      taskElement.innerHTML = `
+        <div class="task-checkbox ${task.completed ? 'completed' : ''}">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="task-content">
+          <div class="task-title">${task.title}</div>
+          <div class="task-info">
+            <span class="priority ${task.priority}">${task.priority}</span>
+            <span class="due-date">${task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date'}</span>
+          </div>
+        </div>
+        <div class="task-actions">
+          <button class="task-action-btn favorite-btn" title="Favorite">
+            <i class="far fa-star"></i>
+          </button>
+          <button class="task-action-btn edit-btn" title="Edit">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button class="task-action-btn delete-btn" title="Delete">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+
+      // Add event listeners
+      const checkbox = taskElement.querySelector('.task-checkbox');
+      checkbox.addEventListener('click', () => {
+        if (task.completed) {
+          markAsIncomplete(task.task_id);
+        } else {
+          markAsCompleted(task.task_id);
+        }
+      });
+
+      const editBtn = taskElement.querySelector('.edit-btn');
+      editBtn.addEventListener('click', () => {
+        currentTaskId = task.task_id;
+        isEditing = true;
+        openTaskDetailSidebar(task);
+      });
+
+      const deleteBtn = taskElement.querySelector('.delete-btn');
+      deleteBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to delete this task?')) {
+          deleteTask(task.task_id);
+        }
+      });
+
+      const favoriteBtn = taskElement.querySelector('.favorite-btn');
+      favoriteBtn.addEventListener('click', () => {
+        if (task.favorite) {
+          removeFromFavorites(task.task_id);
+        } else {
+          markAsFavorite(task.task_id);
+        }
+      });
+
+      tasksContainer.appendChild(taskElement);
+    });
+  };
+
+  // Open task detail sidebar
+  const openTaskDetailSidebar = (task = null) => {
+    taskDetailSidebar.classList.add('open');
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+
+    if (task) {
+      // Prefill form fields with task data for editing
+      document.getElementById('task-title-input').value = task.title;
+      document.getElementById('task-due-date').value = task.due_date || '';
+      document.getElementById('task-note').value = task.description || '';
+      
+      // Set priority radio button
+      const priorityRadio = document.querySelector(`input[name="priority"][value="${task.priority}"]`);
+      if (priorityRadio) priorityRadio.checked = true;
+      
+      document.getElementById('save-task-btn').textContent = 'Save';
+    } else {
+      // Clear form for a new task
+      document.getElementById('task-title-input').value = '';
+      document.getElementById('task-due-date').value = '';
+      document.getElementById('task-note').value = '';
+      document.querySelector('input[name="priority"][value="medium"]').checked = true;
+      
+      document.getElementById('save-task-btn').textContent = 'Add';
+    }
+  };
+
+  // Close task detail sidebar
+  const closeTaskDetailSidebar = () => {
+    taskDetailSidebar.classList.remove('open');
+    overlay.classList.remove('show');
+    document.body.style.overflow = 'auto';
+    currentTaskId = null;
+    isEditing = false;
+    steps = [];
+    uploadedFiles = [];
+  };
+
+  // Event listeners
+  addTaskBtn.addEventListener('click', () => {
+    openTaskDetailSidebar();
+  });
+
+  closeDetailBtn.addEventListener('click', closeTaskDetailSidebar);
+
+  overlay.addEventListener('click', closeTaskDetailSidebar);
+
+  saveTaskBtn.addEventListener('click', () => {
+    const title = document.getElementById('task-title-input').value;
+    const dueDate = document.getElementById('task-due-date').value;
+    const priority = document.querySelector('input[name="priority"]:checked')?.value || 'medium';
+    const note = document.getElementById('task-note').value || '';
+
+    if (!title) {
+      alert('Please enter a task title.');
+      return;
+    }
+
+    const taskData = {
+      title,
+      dueDate,
+      priority,
+      note,
+    };
+
+    if (isEditing && currentTaskId) {
+      updateTask(currentTaskId, taskData);
+    } else {
+      createTask(taskData);
+    }
+
+    closeTaskDetailSidebar();
+  });
+
+  cancelTaskBtn.addEventListener('click', closeTaskDetailSidebar);
+
+  // Initialize the application
+  const initApp = () => {
+    // Display current date
+    const today = new Date();
+    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+    fullDateElement.textContent = today.toLocaleDateString('en-US', options);
+    
+    // Load tasks from API
+    loadTasks();
+  };
+
+  initApp();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
   const addTaskBtn = document.getElementById('add-task-btn');

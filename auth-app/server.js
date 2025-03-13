@@ -20,12 +20,56 @@ const db = mysql.createConnection({
   user: "root",
   password: "MitsuSQL5847",
   database: "auth_db",
+  multipleStatements: true
 });
 
 db.connect((err) => {
   if (err) throw err;
   console.log("MySQL Connected...");
+  
+  // Create tables if they don't exist
+  const createUserTable = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(50) NOT NULL UNIQUE,
+      email VARCHAR(100) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
+  
+  db.query(createUserTable, (err) => {
+    if (err) {
+      console.error("Error creating users table:", err);
+    } else {
+      console.log("Users table checked/created");
+      
+      // Load and execute the tasks schema
+      const fs = require('fs');
+      const path = require('path');
+      const sqlFilePath = path.join(__dirname, 'public', 'database', 'tasks_schema.sql');
+      
+      fs.readFile(sqlFilePath, 'utf8', (err, data) => {
+        if (err) {
+          console.error('Error reading SQL file:', err);
+          return;
+        }
+        
+        db.query(data, (err) => {
+          if (err) {
+            console.error('Error executing SQL schema:', err);
+          } else {
+            console.log('Tasks tables checked/created');
+          }
+        });
+      });
+    }
+  });
 });
+
+// Import task routes
+const taskRoutes = require('./public/routes/tasks')(db);
+app.use('/api', taskRoutes);
 
 // Route to serve the Sign-Up page when visiting the root URL
 app.get("/", (req, res) => {
@@ -73,6 +117,33 @@ app.post("/sign-in", async (req, res) => {
       res.status(401).send("Invalid credentials");
     } else {
       res.redirect("/home");
+    }
+  });
+});
+
+// API Login route for JSON response
+app.post("/api/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  const sql = "SELECT * FROM users WHERE username = ? OR email = ?";
+  db.query(sql, [username, username], async (err, results) => {
+    if (err) return res.status(500).json({ message: "Server error" });
+
+    if (results.length === 0) return res.status(401).json({ message: "User not found" });
+
+    const user = results[0];
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      res.status(401).json({ message: "Invalid credentials" });
+    } else {
+      // Return user data without sensitive information
+      const userData = {
+        id: user.id,
+        username: user.username,
+        email: user.email
+      };
+      res.status(200).json(userData);
     }
   });
 });
