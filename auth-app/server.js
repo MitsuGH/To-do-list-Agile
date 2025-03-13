@@ -46,7 +46,7 @@ app.post("/sign-up", async (req, res) => {
     if (err) {
       res.status(500).send("Error signing up");
     } else {
-      res.send("User registered successfully!");
+      res.redirect("/home");
     }
   });
 });
@@ -72,14 +72,16 @@ app.post("/sign-in", async (req, res) => {
     if (!passwordMatch) {
       res.status(401).send("Invalid credentials");
     } else {
-      res.send("Sign-in successful!");
+      res.redirect("/home");
     }
   });
 });
 
+// Route to serve the Forgot Password page
 app.get("/forgot-pass", (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'forgot-pass.html'));
 });
+
 // Forgot Password Route
 app.post("/forgot-password", (req, res) => {
   const { email } = req.body;
@@ -92,6 +94,16 @@ app.post("/forgot-password", (req, res) => {
 
     res.send("Password reset link has been sent to your email.");
   });
+});
+
+// Route to serve the Home page after sign-in
+app.get("/home", (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'home-page.html')); // Serve home.html
+});
+
+// Route to serve the Profile page
+app.get("/profile", (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'profile.html')); // Serve profile.html
 });
 
 app.listen(port, () => {

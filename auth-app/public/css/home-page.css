@@ -51,7 +51,7 @@ body {
   display: flex;
   align-items: center;
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--sidebar-hover);
+  border-bottom: 1px solid var(--sidebar-text);
   margin-bottom: 20px;
 }
 
